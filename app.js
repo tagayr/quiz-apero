@@ -1,4 +1,31 @@
-import { QUESTIONS } from './questions.js';
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
+
+// ── Supabase config (anon key is safe to expose — read-only via RLS) ─────────
+const SUPABASE_URL      = 'REPLACE_WITH_YOUR_SUPABASE_URL'
+const SUPABASE_ANON_KEY = 'REPLACE_WITH_YOUR_SUPABASE_ANON_KEY'
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+
+let ALL_QUESTIONS = []
+
+function mapQuestion(row) {
+  return {
+    id:              row.id,
+    category:        row.category,
+    difficulty:      row.difficulty,
+    question:        row.question,
+    answer:          row.answer,
+    answerType:      row.answer_type,
+    acceptedAnswers: row.accepted_answers ?? [],
+    timeLimit:       row.time_limit,
+  }
+}
+
+async function loadQuestions() {
+  const { data, error } = await supabase.from('questions').select('*')
+  if (error) { console.error('Failed to load questions:', error.message); return }
+  ALL_QUESTIONS = data.map(mapQuestion)
+  $btnStart.disabled = false
+}
 
 // ── Constants ────────────────────────────────────────────────────────────────
 const RING_C = 339.29; // 2 * PI * 54
@@ -156,9 +183,9 @@ function shuffle(arr) {
 }
 
 function drawQuestions() {
-  const easy   = shuffle(QUESTIONS.filter(q => q.difficulty === "easy"));
-  const medium = shuffle(QUESTIONS.filter(q => q.difficulty === "medium"));
-  const hard   = shuffle(QUESTIONS.filter(q => q.difficulty === "hard"));
+  const easy   = shuffle(ALL_QUESTIONS.filter(q => q.difficulty === "easy"));
+  const medium = shuffle(ALL_QUESTIONS.filter(q => q.difficulty === "medium"));
+  const hard   = shuffle(ALL_QUESTIONS.filter(q => q.difficulty === "hard"));
   return shuffle([
     ...easy.slice(0, 7),
     ...medium.slice(0, 9),
@@ -391,6 +418,9 @@ function launchConfetti() {
 }
 
 // ── Events ───────────────────────────────────────────────────────────────────
+$btnStart.disabled = true  // re-enabled once questions are fetched
+loadQuestions()
+
 $btnStart.addEventListener("click", startGame);
 $btnReplay.addEventListener("click", () => { showScreen("landing"); });
 $btnValidate.addEventListener("click", () => handleSubmit(false));
