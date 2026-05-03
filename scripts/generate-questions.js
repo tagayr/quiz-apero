@@ -8,7 +8,7 @@ const VALID_DIFFICULTIES  = ['easy', 'medium', 'hard']
 const VALID_ANSWER_TYPES  = ['text', 'name', 'date']
 const VALID_TIME_LIMITS   = [10, 15, 20]
 const QUESTIONS_PER_RUN   = 10
-const HF_MODEL            = 'mistralai/Mistral-7B-Instruct-v0.3'
+const HF_MODEL            = 'Qwen/Qwen2.5-7B-Instruct'
 
 const { SUPABASE_URL, SUPABASE_SERVICE_KEY, HF_API_TOKEN } = process.env
 if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY || !HF_API_TOKEN) {
