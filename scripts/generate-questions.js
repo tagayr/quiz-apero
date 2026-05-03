@@ -66,8 +66,10 @@ Retourne UNIQUEMENT un tableau JSON valide, sans aucun texte avant ou après:
 }
 
 async function callHF(prompt) {
+  // Wrap prompt in Mistral instruct format
+  const input = `<s>[INST] ${prompt} [/INST]`
   const res = await fetch(
-    `https://api-inference.huggingface.co/models/${HF_MODEL}/v1/chat/completions`,
+    `https://api-inference.huggingface.co/models/${HF_MODEL}`,
     {
       method: 'POST',
       headers: {
@@ -75,16 +77,18 @@ async function callHF(prompt) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: HF_MODEL,
-        messages: [{ role: 'user', content: prompt }],
-        max_tokens: 2000,
-        temperature: 0.7,
+        inputs: input,
+        parameters: {
+          max_new_tokens: 2000,
+          temperature: 0.7,
+          return_full_text: false,
+        },
       }),
     }
   )
   if (!res.ok) throw new Error(`HF API ${res.status}: ${await res.text()}`)
   const data = await res.json()
-  return data.choices?.[0]?.message?.content ?? ''
+  return data[0]?.generated_text ?? ''
 }
 
 function extractJSON(text) {
