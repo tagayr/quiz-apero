@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz Apéro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── Écran 1 : Landing ───────────────────────────────────────────────── -->
+  <div id="screen-landing" class="screen active">
+    <div class="floating-emojis" aria-hidden="true">
+      <span>🎬</span><span>📚</span><span>🌍</span><span>⚽</span>
+      <span>🎨</span><span>🏛️</span><span>🎭</span><span>🗺️</span>
+      <span>🏆</span><span>🎸</span><span>🗼</span><span>📖</span>
+      <span>🌟</span><span>🎯</span><span>🏅</span><span>🎪</span>
+    </div>
+    <div class="landing-card">
+      <h1 class="logo">Quiz Apéro</h1>
+      <p class="tagline">20 questions · toutes catégories · chrono</p>
+      <button id="btn-start" class="btn-cta">
+        Challenge-moi en culture G !
+      </button>
+      <p class="landing-hint">Littérature · Art · Histoire · Géo · Politique · Sport · Cinéma · BD & Manga</p>
+    </div>
+  </div>
+
+  <!-- ── Écran 2 : Playing ───────────────────────────────────────────────── -->
+  <div id="screen-playing" class="screen">
+    <div class="play-header">
+      <div class="badges">
+        <span id="badge-category" class="badge badge-category">Histoire</span>
+        <span id="badge-difficulty" class="badge badge-difficulty">Medium</span>
+      </div>
+      <div id="question-counter" class="question-counter">Q 1 / 20</div>
+      <div id="current-score" class="current-score">0 pt</div>
+    </div>
+
+    <div class="play-body">
+      <!-- Timer SVG -->
+      <div class="timer-wrap">
+        <svg class="timer-svg" viewBox="0 0 120 120" width="120" height="120">
+          <circle class="timer-bg" cx="60" cy="60" r="54" />
+          <circle id="timer-ring" class="timer-ring" cx="60" cy="60" r="54" />
+        </svg>
+        <span id="timer-label" class="timer-label">20</span>
+      </div>
+
+      <!-- Question -->
+      <p id="question-text" class="question-text">
+        La question apparaîtra ici…
+      </p>
+
+      <!-- Answer form -->
+      <div class="answer-area">
+        <input
+          id="answer-input"
+          type="text"
+          class="answer-input"
+          placeholder="Ta réponse…"
+          autocomplete="off"
+          autocorrect="off"
+          spellcheck="false"
+        />
+        <button id="btn-validate" class="btn-validate">Valider</button>
+      </div>
+    </div>
+
+    <!-- Feedback overlay -->
+    <div id="feedback-overlay" class="feedback-overlay hidden">
+      <div class="feedback-content">
+        <div id="feedback-icon" class="feedback-icon">✓</div>
+        <div id="feedback-message" class="feedback-message">Bonne réponse !</div>
+        <div id="feedback-answer" class="feedback-answer"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Écran 3 : Results ───────────────────────────────────────────────── -->
+  <div id="screen-results" class="screen">
+    <canvas id="confetti-canvas"></canvas>
+    <div class="results-content">
+      <h2 class="results-title">Résultat</h2>
+      <div class="score-display">
+        <span id="final-score">0</span>
+        <span class="score-slash">/ 20</span>
+      </div>
+      <p id="score-message" class="score-message">…</p>
+
+      <div id="recap-list" class="recap-list"></div>
+
+      <button id="btn-replay" class="btn-cta btn-replay">Rejouer !</button>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
