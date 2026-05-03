@@ -1,3 +1,4 @@
+/*
 export const QUESTIONS = [
   // ─── HISTOIRE ────────────────────────────────────────────────────────────────
   {
@@ -1753,3 +1754,5 @@ export const QUESTIONS = [
     timeLimit: 10,
   },
 ];
+
+*/
