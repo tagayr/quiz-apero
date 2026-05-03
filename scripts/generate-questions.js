@@ -1,4 +1,4 @@
-// Daily pipeline: generates 10 new questions via Hugging Face and inserts them into Supabase.
+// Daily pipeline: generates 1 question per category via Hugging Face and inserts them into Supabase.
 // Usage: SUPABASE_URL=... SUPABASE_SERVICE_KEY=... HF_API_TOKEN=... node scripts/generate-questions.js
 
 import { createClient } from '@supabase/supabase-js'
@@ -7,7 +7,6 @@ const CATEGORIES = ['histoire', 'geographie', 'litterature', 'art', 'cinema', 's
 const VALID_DIFFICULTIES  = ['easy', 'medium', 'hard']
 const VALID_ANSWER_TYPES  = ['text', 'name', 'date']
 const VALID_TIME_LIMITS   = [10, 15, 20]
-const QUESTIONS_PER_RUN   = 10
 const HF_MODEL            = 'Qwen/Qwen2.5-7B-Instruct'
 
 const { SUPABASE_URL, SUPABASE_SERVICE_KEY, HF_API_TOKEN } = process.env
@@ -26,13 +25,6 @@ async function fetchExistingByCategory() {
     if (grouped[row.category]) grouped[row.category].push(row.question)
   }
   return grouped
-}
-
-function distribute(total, categories) {
-  const shuffled = [...categories].sort(() => Math.random() - 0.5)
-  const counts = Object.fromEntries(categories.map(c => [c, 0]))
-  for (let i = 0; i < total; i++) counts[shuffled[i % shuffled.length]]++
-  return counts
 }
 
 function buildPrompt(category, count, existingQuestions) {
@@ -119,15 +111,12 @@ async function main() {
   const total = Object.values(existingByCategory).reduce((s, a) => s + a.length, 0)
   console.log(`Found ${total} existing questions`)
 
-  const distribution = distribute(QUESTIONS_PER_RUN, CATEGORIES)
-  console.log('Distribution for today:', distribution)
-
   const toInsert = []
   let skipped = 0
 
-  for (const [category, count] of Object.entries(distribution)) {
-    if (count === 0) continue
-    console.log(`\nGenerating ${count} question(s) for "${category}"...`)
+  for (const category of CATEGORIES) {
+    const count = 1
+    console.log(`\nGenerating 1 question for "${category}"...`)
 
     let raw
     try {
