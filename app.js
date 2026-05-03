@@ -1,8 +1,8 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
 
 // ── Supabase config (anon key is safe to expose — read-only via RLS) ─────────
-const SUPABASE_URL      = 'REPLACE_WITH_YOUR_SUPABASE_URL'
-const SUPABASE_ANON_KEY = 'REPLACE_WITH_YOUR_SUPABASE_ANON_KEY'
+const SUPABASE_URL      = 'https://eamftcnxmpghrjolblhi.supabase.co'
+const SUPABASE_ANON_KEY = 'sb_publishable_62ftgiXIdaw7vhZ5e-mDHg_ukveMCh-'
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
 let ALL_QUESTIONS = []
