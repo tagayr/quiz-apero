@@ -33,11 +33,29 @@ function buildPrompt(category, count, existingQuestions) {
     .map((q, i) => `${i + 1}. ${q}`)
     .join('\n')
 
-  return `Tu es un expert en quiz culturel francophone. Génère exactement ${count} question(s) de quiz en français pour la catégorie "${category}".
+  return `Tu es un expert en quiz culturel francophone pour un jeu d'apéro entre amis cultivés. Génère exactement ${count} question(s) de quiz en français pour la catégorie "${category}".
 
-Règles:
-- Questions en français uniquement
-- Mélange de difficultés: easy (time_limit: 20), medium (time_limit: 15), hard (time_limit: 10)
+QUALITÉ EXIGÉE — la question doit:
+- Nécessiter une vraie culture générale, pas du bon sens ou de la logique basique
+- Être précise et factuelle, avec une seule bonne réponse claire
+- Surprendre ou faire réfléchir, même les gens cultivés
+- Porter sur un fait spécifique (une date précise, un nom, une œuvre, un événement particulier)
+
+INTERDIT — rejette toute question qui:
+- A une réponse évidente pour n'importe qui (ex: "Quelle est la capitale de la France ?")
+- Porte sur des règles génériques d'un sport (ex: "Combien de joueurs dans une équipe ?")
+- Est trop vague ou trop large (ex: "Dans quel pays se passe cette histoire ?")
+- Pourrait être devinée sans aucune connaissance (ex: "Quel sport utilise une balle ?")
+- Concerne un fait connu de tous les écoliers
+
+DIFFICULTÉS:
+- easy (time_limit: 20) : connu des gens cultivés mais pas trivial
+- medium (time_limit: 15) : demande une vraie culture générale
+- hard (time_limit: 10) : pointu, seuls les experts s'en souviennent
+
+Préfère les difficultés medium et hard.
+
+Autres règles:
 - answer_type: "text" (réponse courte), "name" (nom de personne), "date" (année ou date)
 - accepted_answers: variantes orthographiques acceptées (tableau, peut être vide)
 - Évite des questions similaires à celles déjà existantes:
@@ -47,12 +65,12 @@ Retourne UNIQUEMENT un tableau JSON valide, sans aucun texte avant ou après:
 [
   {
     "category": "${category}",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "question": "...",
     "answer": "...",
     "answer_type": "text",
     "accepted_answers": [],
-    "time_limit": 20
+    "time_limit": 15
   }
 ]`
 }
