@@ -8,7 +8,7 @@ const VALID_DIFFICULTIES  = ['easy', 'medium', 'hard']
 const VALID_ANSWER_TYPES  = ['text', 'name', 'date']
 const VALID_TIME_LIMITS   = [10, 15, 20]
 const QUESTIONS_PER_RUN   = 10
-const HF_MODEL            = 'HuggingFaceH4/zephyr-7b-beta'
+const HF_MODEL            = 'mistralai/Mistral-7B-Instruct-v0.3'
 
 const { SUPABASE_URL, SUPABASE_SERVICE_KEY, HF_API_TOKEN } = process.env
 if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY || !HF_API_TOKEN) {
@@ -66,8 +66,8 @@ Retourne UNIQUEMENT un tableau JSON valide, sans aucun texte avant ou après:
 }
 
 async function callHF(prompt) {
-  // Wrap prompt in Zephyr chat format
-  const input = `<|system|>\nTu es un expert en quiz culturel francophone qui génère des questions en JSON.</s>\n<|user|>\n${prompt}</s>\n<|assistant|>`
+  // Wrap prompt in Mistral instruct format
+  const input = `<s>[INST] ${prompt} [/INST]`
   const res = await fetch(
     `https://api-inference.huggingface.co/models/${HF_MODEL}`,
     {
